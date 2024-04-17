@@ -31,23 +31,22 @@ class PersonController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): View
     {
         $validated = $request->validate([
             'name' => 'required',
             'birthday' => 'required',
             'cpf' => [
                 'required',
-                'regex:/([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/',
+                'cpf',
                 'unique:people,cpf'
             ],
         ]);
 
         Person::create($request->all());
 
-        return redirect(route('persons.index'));
+        return View('persons.success');
     }
-
     /**
      * Display the specified resource.
      */
