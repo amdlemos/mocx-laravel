@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -33,17 +34,28 @@ class PersonController extends Controller
      */
     public function store(Request $request): View
     {
-        $validated = $request->validate([
-            'name' => 'required',
-            'birthday' => 'required',
-            'cpf' => [
-                'required',
-                'cpf',
-                'unique:people,cpf'
+        $validated = $request->validate(
+            [
+                'name' => 'required|max:100|min:3',
+                'birthday' => 'required',
+                'cpf' => 'required|cpf|unique:people,cpf'
             ],
-        ]);
+            [
+                'name.required' => 'Nome é obrigatório.',
+                'name.max' => 'Máximo de 100 caracteres',
+                'name.min' => 'Míximo de 3 caracteres',
 
-        Person::create($request->all());
+                'birthday.required' => 'Data de nascimento é obrigatório.',
+
+                'cpf.required' => 'CPF é obrigatório',
+                'cpf.cpf' => 'CPF inválido.',
+                'cpf.unique' => 'CPF já existe.',
+            ]
+        );
+
+        $person = Person::create($request->all());
+
+        Validator::make($person, 'cpf', ['cpf' => 'CPF inválido']);
 
         return View('persons.success');
     }
