@@ -35,11 +35,12 @@ class PersonController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
+            'birthday' => 'required',
             'cpf' => [
                 'required',
-                'regex:/([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/'
+                'regex:/([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/',
+                'unique:people,cpf'
             ],
-            'birthday' => 'required',
         ]);
 
         Person::create($request->all());

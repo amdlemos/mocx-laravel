@@ -5,7 +5,15 @@
             <!-- Name -->
             <div>
                 <x-input-label for="name" :value="__('Nome')" />
-                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                <x-text-input
+                    id="name"
+                    class="block mt-1 w-full"
+                    type="text"
+                    name="name"
+                    maxlength="100"
+                    minlenght="3"
+                    :value="old('name')"
+                    required autofocus autocomplete="name" />
                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
 
@@ -17,6 +25,8 @@
                     class="block mt-1 w-full"
                     type="text"
                     name="cpf"
+                    maxlength="14"
+                    minlenght="11"
                     :value="old('cpf')"
                     autofocus autocomplete="cpf" />
                 <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
@@ -25,7 +35,7 @@
             <!-- Data Nascimento-->
             <div>
                 <x-input-label for="birthday" :value="__('Nascimento')" />
-                <input
+                <x-text-input
                     id="birthday"
                     class="block mt-1 w-full shadown-sm border-gray-300 rounded-md"
                     type="date"

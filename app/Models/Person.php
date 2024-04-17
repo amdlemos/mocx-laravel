@@ -19,7 +19,4 @@ class Person extends Model
         'birthday',
     ];
 
-    // protected $dates = [
-    //     'birthday'
-    // ]
 }
