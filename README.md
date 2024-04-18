@@ -37,3 +37,5 @@ sail npm run dev
 ```
 
 A aplicação estara rodando em `localhost:80`.
+
+[Gerador de CPF](https://www.geradordecpf.org/)
