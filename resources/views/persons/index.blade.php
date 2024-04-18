@@ -44,7 +44,7 @@
                                 {{$person->cpf}}
                             </td>
                             <td class="px-6 py-4">
-                                {{$person->birthday}}
+                            {{ date('m/d/Y', strtotime($person->birthday)) }}
                             </td>
                             <td class="px-6 py-4">
                                 <!-- Edit Button -->

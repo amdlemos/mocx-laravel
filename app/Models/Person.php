@@ -19,7 +19,11 @@ class Person extends Model
         'birthday',
     ];
 
-    // protected $dates = [
-    //     'birthday',
-    // ];
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['birthday'];
+
 }
