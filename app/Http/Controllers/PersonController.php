@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -55,8 +56,6 @@ class PersonController extends Controller
 
         $person = Person::create($request->all());
 
-        Validator::make($person, 'cpf', ['cpf' => 'CPF inválido']);
-
         return View('persons.success');
     }
     /**
@@ -70,17 +69,42 @@ class PersonController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Person $person)
+    public function edit(Person $person): View
     {
-        //
+        return view('persons.edit', [
+            'person' => $person,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Person $person)
+    public function update(Request $request, Person $person): View
     {
-        //
+        // Gate::authorize('update', $person);
+
+        $validated = $request->validate(
+            [
+                'name' => 'required|max:100|min:3',
+                'birthday' => 'required',
+                'cpf' => 'required|cpf|unique:people,cpf,'. $person->id
+            ],
+            [
+                'name.required' => 'Nome é obrigatório.',
+                'name.max' => 'Máximo de 100 caracteres',
+                'name.min' => 'Míximo de 3 caracteres',
+
+                'birthday.required' => 'Data de nascimento é obrigatório.',
+
+                'cpf.required' => 'CPF é obrigatório',
+                'cpf.cpf' => 'CPF inválido.',
+                'cpf.unique' => 'CPF já existe.',
+            ]
+        );
+
+        $person->update($validated);
+
+        return View('persons.success');
     }
 
     /**
